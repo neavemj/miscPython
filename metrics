@@ -1,0 +1,64 @@
+#!/usr/bin/python
+
+## DNA assembly metrics in Python ##
+## Matthew J Neave, 29.01.2014 ##
+
+import sys
+
+numberOfContigs = 0
+total = 0
+gc = 0
+contig_lengths = []
+addedLineWraps = ''
+
+print 'THIS IS MATTS DNA METRIC SCRIPT'
+
+for line in open(sys.argv[1]): #this opens the file called directly after the script
+	
+	if line[0] == '>':  	                    
+		numberOfContigs = numberOfContigs + 1   # add up each seq ID for total number of contigs
+		if len(addedLineWraps) > 1:						# ensures it only runs once the first contig has been combined
+			contig_lengths.append(len(addedLineWraps)) 	 # creates list of lengths for later max contig size and N50 calculations
+			total = total + len(addedLineWraps) 		 # cumulative total of assembly size
+			G = addedLineWraps.count('G') + addedLineWraps.count('g')
+			C = addedLineWraps.count('C') + addedLineWraps.count('c')
+			gc = gc + G + C						# counting Gs and Cs in assembly
+			addedLineWraps = ''
+	else:	
+		addedLineWraps = addedLineWraps + line
+		addedLineWraps = addedLineWraps.rstrip("\r\n") # had to add this to remove newline characters, which resulted in incorrect count for contig lengths							     
+			
+contig_lengths.append(len(addedLineWraps))   # had to add this final iteration for the very last contig
+total = total + len(addedLineWraps)
+G = addedLineWraps.count('G') + addedLineWraps.count('g')
+C = addedLineWraps.count('C') + addedLineWraps.count('c')
+gc = gc + G + C	
+addedLineWraps = ''
+
+print 'total bps:', total
+total_for_N50 = total
+total_for_N90 = total
+
+print 'no of contigs:', numberOfContigs 
+print 'max contig size:', max(contig_lengths) # max and min contig sizes
+print 'ave contig size:', total / numberOfContigs 
+print 'min contig size:', min(contig_lengths)
+
+gc_content = (gc / float(total)) * 100     # had to use float for division for some reason
+print 'GC content: %0.2f' % (gc_content)
+
+contig_lengths.sort()						# sort contigs by size for N50 calcs
+contig_lengths.reverse()					# had to reverse sort (high to low) here. Couldn't figure out how to do it in previous line
+
+for i in contig_lengths:					# N50 calc. go through each contig and minus its size from total size until that contig is greater than the reduced total size
+	total_for_N50 = total_for_N50 - i
+	if total_for_N50 < total*0.5:
+		print 'N50:',i
+		break								# break just ends the loop. 
+		
+for i in contig_lengths:					# N90 calc.
+	total_for_N90 = total_for_N90 - i
+	if total_for_N90 < total*0.1:
+		print 'N90:',i
+		break
+				
