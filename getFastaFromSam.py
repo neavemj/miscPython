@@ -4,12 +4,12 @@
 # Matthew J. Neave 2.6.15
 
 import argparse
-import re 
+import re
 
 """
-uses regex to match header names so need to be careful with contig list
-eg. NODE_1 also matches NODE_100, put following character to avoid
-NODE_1_ no longer matches higher up numbers
+uses startswith to match header names so need to be careful with contig list
+eg. NODE_1 also matches NODE_100, put the following character to avoid
+eg. NODE_1_ no longer matches higher up numbers
 """
 
 # get command line arguments with argparse
@@ -40,6 +40,5 @@ for record in args.sam_file[0]:
     record = record.strip()
     cols = record.split("\t")
     if not record.startswith("@"):
-        for contig in target_contigs:
-            if re.search(contig, cols[2]): # see note about regex
-                args.output[0].write(">%s\n%s\n" % (cols[0], cols[9]))
+        if [ctg for ctg in target_contigs if cols[2].startswith(ctg)]:
+            args.output[0].write(">%s\n%s\n" % (cols[0], cols[9]))
