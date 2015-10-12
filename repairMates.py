@@ -3,7 +3,7 @@
 # script to 're-pair' mates after trimming
 # Matthew J. Neave 5.5.2015 <matthewjneave1@gmail.com>
 
-# imports
+# library imports
 
 import sys
 import argparse
