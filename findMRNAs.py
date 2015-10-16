@@ -21,7 +21,7 @@ with open(rRNA_file) as f:
 
 count = 0 
 fasta_sequences = SeqIO.parse(open(fasta_file),'fasta')
-end = False
+
 with open(result_file, "w") as f:
     for seq in fasta_sequences:
         if seq.id not in ribosomal:
