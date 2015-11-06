@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # 6.11.15 create combined MED matrix plus taxonomy table from mothur
+# similar to file created with full mothur pipeline
 
 import sys
 
