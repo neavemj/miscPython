@@ -19,7 +19,7 @@ with open(number_file) as f:
             wanted.add(line)
 
 
-count = 0 
+count = 0
 fasta_sequences = SeqIO.parse(open(fasta_file),'fasta')
 end = False
 with open(result_file, "w") as f:
@@ -27,7 +27,7 @@ with open(result_file, "w") as f:
         if seq.id in wanted:
             SeqIO.write([seq], f, "fasta")
             count += 1       # keep track of how many IDs were found so can report later
-        
+
 print "Saved %i records from %s to %s" % (count, fasta_file, result_file)
 if count < len(wanted):
     print "Warning %i IDs not found in %s" % (len(wanted)-count, fasta_file)

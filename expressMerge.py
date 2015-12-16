@@ -17,13 +17,10 @@ for arg in sys.argv[1:]:
 		cols = line.strip().split('\t')
 		gene = cols[0]
 		count = cols[1]
-		
 		fileDict[arg][gene] = count
-
 
 sampleList = [x for x in fileDict]
 sampleList.sort()
-
 
 for key in fileDict:
 	output_handle.write("gene" + "\t" + "\t".join(sampleList) + "\n")
@@ -33,8 +30,3 @@ for key in fileDict:
 			output_handle.write(fileDict[sample][gene] + "\t")
 		output_handle.write("\n")
 	break
-	
-
-
-
-	
