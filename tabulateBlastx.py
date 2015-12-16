@@ -32,7 +32,7 @@ for record in sorted_dict:
 
 # plotting with matplotlib
 if 1 == 2:
-    sortedList = zip(*sorted_dict) 
+    sortedList = zip(*sorted_dict)
     x_axis = np.arange(len(sortedList[1]))
     pl.bar(x_axis, sortedList[1], align="center")
     pl.xticks(x_axis, sortedList[0], rotation="vertical")
