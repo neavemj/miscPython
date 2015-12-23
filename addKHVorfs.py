@@ -6,9 +6,11 @@
 
 import sys
 
-count_data = open(sys.argv[1])      # genes.read_group_tracking
+# note: had to start using the isoforms files to get proper fpkms for all orfs
+
+count_data = open(sys.argv[1])      # isoforms.read_group_tracking
 id_data = open(sys.argv[2])         # isoforms.fpkm_tracking //changed//
-out_file = open(sys.argv[3], "w")   # gene.Rdf.txt
+out_file = open(sys.argv[3], "w")   # isoforms.Rdf.txt
 
 # read through id file and grab out the orf that corresponds to the xloc number
 
@@ -16,9 +18,10 @@ id_dict = {}
 
 for line in id_data:
     line = line.strip().split("\t")
-    xloc = line[3]
-    orf = line[2]
-    id_dict[xloc] = orf
+    tcons = line[0]
+    orf_raw = line[2]
+    orf_clean = orf_raw.replace("CyHV3_", "").replace(".t01", "")
+    id_dict[tcons] = orf_clean 
 
 # now add orf to the correct row
 # count is used to add header to first row
