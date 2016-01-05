@@ -13,7 +13,7 @@ ext = [".py", ".sl", ".sh", ".R"]
 # list function
 
 def ls():
-    files = sorted(os.listdir())
+    files = sorted(os.listdir("."))
     for i in files:
         if i.startswith("."):
             pass
@@ -40,7 +40,7 @@ def cat(file_name):
     file_handle = open(file_name)
     for line in file_handle:
         line = line.strip()
-        print(line)
+        print("\033[0;32m" + line + "\033[0m")
 
 if __name__ == '__main__':
     main()
