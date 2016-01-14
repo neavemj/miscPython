@@ -2,11 +2,12 @@
 
 # quick find file script
 
-import os, sys
+import os, sys, re
 
 name = sys.argv[1]
 
 for path, dirs, files in os.walk("."):
-    if name in files:
-        full_path = os.path.join(path, name)
-        print os.path.abspath(full_path)
+    for fl in files:
+        if re.findall(name, fl):
+            full_path = os.path.join(path, fl)
+            print os.path.abspath(full_path)
