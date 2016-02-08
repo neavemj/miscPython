@@ -26,7 +26,7 @@ reVmo_set = get_sig_set(reVmo)
 
 v = vn.venn3([acVmo_set, peVmo_set, reVmo_set], ("acute", "persistent",
 "reactivated"), alpha=0.5)
-# just added this circles part to get a dashed line
+# just added this circles part to modify line properties 
 c = vn.venn3_circles([acVmo_set, peVmo_set, reVmo_set])
 for j in c: j.set_lw(1.0)
 
