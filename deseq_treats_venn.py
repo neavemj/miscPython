@@ -24,6 +24,7 @@ acVmo_set = get_sig_set(acVmo)
 peVmo_set = get_sig_set(peVmo)
 reVmo_set = get_sig_set(reVmo)
 
+# the matplotlib_venn diagram will calculate union, etc. 
 v = vn.venn3([acVmo_set, peVmo_set, reVmo_set], ("acute", "persistent",
 "reactivated"), alpha=0.5)
 # just added this circles part to modify line properties 
