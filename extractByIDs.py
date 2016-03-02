@@ -30,5 +30,5 @@ with open(result_file, "w") as f:
 
 print "Saved %i records from %s to %s" % (count, fasta_file, result_file)
 if count < len(wanted):
-    print "Warning %i IDs not found in %s" % (len(wanted)-count, fasta_file)
+    print "Warning: %i IDs not found in %s" % (len(wanted)-count, fasta_file)
 
