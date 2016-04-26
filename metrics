@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 ## DNA assembly metrics in Python ##
 ## Matthew J Neave, 29.01.2014 ##
