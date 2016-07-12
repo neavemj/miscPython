@@ -6,6 +6,7 @@
 import sys
 import time
 import argparse
+import random
 
 parser = argparse.ArgumentParser("apnea training")
 
@@ -66,5 +67,9 @@ def count_down(training, base, step):
             prep_time -= step 
         elif trining == "o2":
             hold_time += step
+
+    finish_list = ["success!", "nice!", "good job!", "done!", "completed!",
+    "excellent!", "easy!", "yeh!", "great!"] 
+    print "\n", finish_list[random.randint(0, len(finish_list))], "\n"
 
 count_down(train_type, base_length, step_time)
