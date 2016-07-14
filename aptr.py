@@ -30,12 +30,12 @@ def check_inputs(train, base, step):
             print "error: the input base and step cannnot be completed in 8 reps"
             quit() 
 
-def display(secs):
+def display(secs, char):
     secs = secs - 1
     if secs < 6:
         print secs
     elif secs % 2 == 0:
-        print "-" * (secs / 2)
+        print char * (secs / 2)
 
 def count_down(training, base, step):
     
@@ -57,11 +57,11 @@ def count_down(training, base, step):
         print "Preparation:", prep_time
         for seconds in range(prep_time, 0, -1):
             time.sleep(1)
-            display(seconds)
+            display(seconds, "-")
         print "hold:", hold_time
         for seconds in range(hold_time, 0, -1):
             time.sleep(1)
-            display(seconds)
+            display(seconds, "*")
 
         if training == "co2":
             prep_time -= step 
