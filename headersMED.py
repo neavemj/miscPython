@@ -38,7 +38,7 @@ missingHeader = 0
 for line in args.mothur_fasta_file:
 	line = line.strip()
 	if line.startswith('>'):
-		header = line.lstrip('>')
+		header = line.lstrip('>').split(" ")[0]
 		if header in groupsDict:
 			newHeader = header.replace('_', ',')
 			out_handle.write('>' + groupsDict[header] + '_' + newHeader + '\n')
