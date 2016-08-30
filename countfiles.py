@@ -8,8 +8,10 @@ import os, sys
 
 basedir = sys.argv[1]
 num_files = 0
+num_dirs = 0
 
 for path, dirs, files in os.walk(basedir):
     num_files += len(files)
+    num_dirs += len(dirs)
 
-print(num_files, "files in {}".format(os.path.abspath(basedir)))
+print(num_files, "files,", num_dirs, "dirs in {}".format(os.path.abspath(basedir)))
