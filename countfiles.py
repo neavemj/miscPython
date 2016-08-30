@@ -12,4 +12,4 @@ num_files = 0
 for path, dirs, files in os.walk(basedir):
     num_files += len(files)
 
-print("number of files in {}:".format(os.path.abspath(basedir)), num_files)
+print(num_files, "files in {}".format(os.path.abspath(basedir)))
