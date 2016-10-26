@@ -13,7 +13,7 @@ def modified_within(seconds):
             if os.path.exists(fullpath):
                 mtime = os.path.getmtime(fullpath)
                 if mtime > (now - seconds):
-                    print fullpath
+                    print(fullpath)
 
 if __name__ == "__main__":
     import sys
