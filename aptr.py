@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# python 3
 
 # Apnea training tables on the command line
 # Matthew J. Neave 21.06.16
@@ -27,38 +28,38 @@ def check_inputs(train, base, step):
     if train == "co2":
         final_time = base - (step * 7) 
         if final_time < 0:
-            print "error: the input base and step cannnot be completed in 8 reps"
+            print("error: the input base and step cannnot be completed in 8 reps")
             quit() 
 
 def display(secs, char):
     secs = secs - 1
     if secs < 6:
-        print secs
+        print(secs)
     elif secs % 2 == 0:
-        print char * (secs / 2)
+        print(char * int((secs / 2)))
 
 def count_down(training, base, step):
     
     check_inputs(training, base, step)
 
     if training == "co2":
-        print "\n~ co2 tables ~"
+        print("\n~ co2 tables ~")
 
     elif train_type == "o2":
-        print "\n~ o2 tables ~"
+        print("\n~ o2 tables ~")
 
     else:
-        print "first argument should be co2 or o2"
+        print("first argument should be co2 or o2")
     
     prep_time = hold_time = base
 
     for rep in range(1, 9):
-        print "\nRep", rep, "\n"
-        print "Preparation:", prep_time
+        print("\nRep", rep, "\n")
+        print("Preparation:", prep_time)
         for seconds in range(prep_time, 0, -1):
             time.sleep(1)
             display(seconds, "-")
-        print "hold:", hold_time
+        print("hold:", hold_time)
         for seconds in range(hold_time, 0, -1):
             time.sleep(1)
             display(seconds, "*")
@@ -70,6 +71,6 @@ def count_down(training, base, step):
 
     finish_list = ["success!", "nice!", "good job!", "done!", "completed!",
     "excellent!", "easy!", "yeh!", "great!"] 
-    print "\n", finish_list[random.randint(0, len(finish_list))], "\n"
+    print("\n", finish_list[random.randint(0, len(finish_list))], "\n")
 
 count_down(train_type, base_length, step_time)
