@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# python 3
 
 # Matthew J Neave 6.5.2014
 # extract sequences using a list of IDs
@@ -28,7 +29,7 @@ with open(result_file, "w") as f:
             SeqIO.write([seq], f, "fasta")
             count += 1       # keep track of how many IDs were found so can report later
 
-print "Saved %i records from %s to %s" % (count, fasta_file, result_file)
+print("Saved {} records from {} to {}".format(count, fasta_file, result_file))
 if count < len(wanted):
-    print "Warning: %i IDs not found in %s" % (len(wanted)-count, fasta_file)
+    print("Warning: {} IDs not found in {}".format(len(wanted)-count, fasta_file))
 
