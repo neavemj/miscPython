@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# python 3
 
 # Matthew J. Neave 17.12.15
 # script to cut a large fasta file into selected sizes
@@ -37,4 +38,4 @@ for seq in fasta_seqs:
         output_file = open("fasta_chunk_" + str(file_num), "w")
         SeqIO.write(seq, output_file, "fasta")
 
-print "Created %s files each containing %s sequences, except the last which contains the remaining %s sequences" % (file_num, args.seqs_per_file[0], count)
+print("Created %s files each containing %s sequences, except the last which contains the remaining %s sequences" % (file_num, args.seqs_per_file[0], count))
