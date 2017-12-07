@@ -25,7 +25,8 @@ fasta_sequences = SeqIO.parse(open(fasta_file),'fasta')
 end = False
 with open(result_file, "w") as f:
     for seq in fasta_sequences:
-        if seq.id in wanted:
+        seq_id = seq.id.split(":")[0] # this bit is for weird Trinity headers
+        if seq_id in wanted:
             SeqIO.write([seq], f, "fasta")
             count += 1       # keep track of how many IDs were found so can report later
 
