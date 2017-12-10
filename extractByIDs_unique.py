@@ -4,6 +4,8 @@
 # Matthew J Neave 6.5.2014
 # extract sequences using a list of IDs
 # input fasta first, then seq IDs, then a name for the output
+# modification: only unique genes are written
+# this will only write the first transcript isoform, from Trinity output
 
 import sys
 from Bio import SeqIO
@@ -22,13 +24,14 @@ with open(number_file) as f:
 
 count = 0
 fasta_sequences = SeqIO.parse(open(fasta_file),'fasta')
-end = False
+written = set()
+
 with open(result_file, "w") as f:
     for seq in fasta_sequences:
         seq_id = seq.id.split(":")[0] # this bit is for weird Trinity headers
-        if seq_id not in wanted: # opposite. for example, pulling out non-blasted sequences
-        #if seq_id in wanted:
+        if seq_id not in wanted and seq_id not in written: # this makes it unique
             SeqIO.write([seq], f, "fasta")
+            written.add(seq_id)
             count += 1       # keep track of how many IDs were found so can report later
 
 print("Saved {} records from {} to {}".format(count, fasta_file, result_file))
