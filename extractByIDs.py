@@ -19,15 +19,15 @@ with open(number_file) as f:
         if line != "":
             wanted.add(line)
 
-
 count = 0
 fasta_sequences = SeqIO.parse(open(fasta_file),'fasta')
 end = False
 with open(result_file, "w") as f:
     for seq in fasta_sequences:
         seq_id = seq.id.split(":")[0] # this bit is for weird Trinity headers
-        if seq_id not in wanted: # opposite. for example, pulling out non-blasted sequences
-        #if seq_id in wanted:
+        #seq_id = "_".join(seq_id.split("_")[:-1]) # this will remove isoform numbers
+        #if seq_id not in wanted: # opposite. for example, pulling out non-blasted sequences
+        if seq_id in wanted:
             SeqIO.write([seq], f, "fasta")
             count += 1       # keep track of how many IDs were found so can report later
 
