@@ -6,6 +6,10 @@
 import argparse
 import subprocess # use to pass command line calls
 import os
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg") # avoids 'no display' error
+import matplotlib.pyplot as plt
 
 # argparse to collect command line arguments
 
@@ -25,9 +29,9 @@ args = parser.parse_args()
 try:
     adapter_fl = open("/apps/trimmomatic/0.36/adapters/TruSeq3-PE-2.fa")
     adapter_path = "/apps/trimmomatic/0.36/adapters/TruSeq3-PE-2.fa"
-    print("~ found adapter files ~")
+    print("~~~ found adapter files ~~~")
 except:
-    print("\n~ could not find adapter file for trimmomatic! ~\n")
+    print("\n~~~ could not find adapter file for trimmomatic! ~~~\n")
     raise
 
 # grab stem name of files for later
@@ -47,5 +51,16 @@ reverse_trimmed = args.reverse_reads[0].rstrip("R2.fastq.gz") + "2P.fastq.gz"
 print("~~~ beginning kmer profile with bbmap ~~~")
 
 subprocess.call(["khist.sh", "in=" + forward_trimmed, "in2=" + reverse_trimmed, "khist=" + stem + ".khist.txt", "threads=16", "k=31"])
+
+# create a quick graph from the khist file
+# zoom is set to usually work (but might not always)
+
+print("~~~ drawing kmer figure  ~~~")
+
+khist = pd.read_csv(stem + ".khist.txt", sep="\t")
+
+khist.plot(x="#Depth", y="Unique_Kmers", xlim=[0, 10000], ylim=[0, 3000])
+
+plt.savefig(stem + ".khist.png", dpi=300)
 
 
