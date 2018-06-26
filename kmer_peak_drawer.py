@@ -61,7 +61,7 @@ stem = args.forward_reads[0].split("_")[0]
 ## TRIM READS ##
 print("~~~ beginning trimming with trimmomatic ~~~")
 
-subprocess.check_output(["trimmomatic", "PE", "-threads", args.threads, args.forward_reads[0], args.reverse_reads[0], "-baseout", stem+".fastq.gz", "ILLUMINACLIP:" + adapter_path + ":2:30:10", "LEADING:3", "TRAILING:3", "SLIDINGWINDOW:4:20", "MINLEN:50"])
+#subprocess.check_output(["trimmomatic", "PE", "-threads", args.threads, args.forward_reads[0], args.reverse_reads[0], "-baseout", stem+".fastq.gz", "ILLUMINACLIP:" + adapter_path + ":2:30:10", "LEADING:3", "TRAILING:3", "SLIDINGWINDOW:4:20", "MINLEN:50"])
 
 forward_trimmed = args.forward_reads[0].rstrip("R1.fastq.gz") + "1P.fastq.gz"
 reverse_trimmed = args.reverse_reads[0].rstrip("R2.fastq.gz") + "2P.fastq.gz"
@@ -70,7 +70,7 @@ reverse_trimmed = args.reverse_reads[0].rstrip("R2.fastq.gz") + "2P.fastq.gz"
 
 print("~~~ beginning kmer profile with bbmap ~~~")
 
-subprocess.call(["khist.sh", "in=" + forward_trimmed, "in2=" + reverse_trimmed, "khist=" + stem + ".khist.txt", "threads=16", "k=31"])
+#subprocess.call(["khist.sh", "in=" + forward_trimmed, "in2=" + reverse_trimmed, "khist=" + stem + ".khist.txt", "threads=16", "k=31"])
 
 # create a quick graph from the khist file
 # zoom is set to usually work (but might not always)
