@@ -61,8 +61,22 @@ SeqIO.write(VP10_record, "VP10_record.fasta", "fasta")
 
 # now blast the VP10 gene against the WSSV genome
 
-subprocess.call(["blastn", "-query", "VP10_record.fasta", "-db", args.genome[0], "-outfmt", "6"])
+blast_output = subprocess.check_output(["blastn", "-query", "VP10_record.fasta", "-db", args.genome[0], "-outfmt",
+                                        "6 length pident sstart send sstrand"])
 
+if not blast_output:
+    print("could not find a WSSV VP10 match in the genome!")
+    sys.exit(1)
+else:
+    blast_cols = blast_output.split()
+    blast_cols = [item.decode("utf-8") for item in blast_cols]
+    length = blast_cols[0]
+    identity = blast_cols[1]
+    start = blast_cols[2]
+    end = blast_cols[3]
+    strand = blast_cols[4]
+    print("\nVP10 gene found at position {}-{} in the {} strand with {}% identity over {} bps (659 bp total length)"
+          .format(start, end, strand, identity, length))
 
 
 
