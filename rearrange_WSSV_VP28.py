@@ -64,6 +64,8 @@ SeqIO.write(VP10_record, "VP10_record.fasta", "fasta")
 blast_output = subprocess.check_output(["blastn", "-query", "VP10_record.fasta", "-db", args.genome[0], "-outfmt",
                                         "6 length pident sstart send sstrand"])
 
+# TODO: what if there is more than 1 blast result?
+
 if not blast_output:
     print("could not find a WSSV VP10 match in the genome!")
     sys.exit(1)
@@ -75,10 +77,29 @@ else:
     start = blast_cols[2]
     end = blast_cols[3]
     strand = blast_cols[4]
-    print("\nVP10 gene found at position {}-{} in the {} strand with {}% identity over {} bps (659 bp total length)"
-          .format(start, end, strand, identity, length))
+    print("\n~~~ VP10 gene found at position {}-{} in the {} strand with {}% identity over {} bps (659 bp total "
+          "length) ~~~".format(start, end, strand, identity, length))
 
+if strand != "plus":
+    print("genome will have to be reverse complemented")
+    # TODO: reverse complement genome using biopython
 
+if float(identity) < 80:
+    print("identity is a bit low for the VP10 gene")
+    # TODO: maybe stop re-arangement if unsure of gene location
 
+# do the actual re-arrangement in biopython
 
+def rearrange_genome(genome, new_start):
+    print("~~~ re-arranging genome with new start position ~~~")
+    record = SeqIO.read(genome, "fasta")
+    start_chunk = record[new_start:]
+    end_chunk = record[:new_start]
+    new_record = start_chunk + end_chunk
+    return(new_record)
 
+rearranged_genome = rearrange_genome(args.genome[0], int(start))
+SeqIO.write(rearranged_genome, args.output[0], "fasta")
+
+print("~~~ Genome {} was successfully re-arranged to begin at position {} and written to the file {} ~~~".format(
+    args.genome[0], start, args.output[0]))
