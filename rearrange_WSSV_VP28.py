@@ -35,8 +35,8 @@ args = parser.parse_args()
 # check required arguments are provided
 
 if args.genome is None or args.output is None:
-    print("\n~~~ required output is missing ~~~\n"
-          "~~~ input genome and an output file name is required ~~~\n")
+    print("*** error: required output is missing"
+          "*** error: input genome and an output file name is required")
     parser.print_help(sys.stderr)
     sys.exit(1)
 
@@ -46,7 +46,7 @@ try:
     tmp = subprocess.call(["blastn", "-version"])
 except OSError as e:
     if e.errno == os.errno.ENOENT:
-        print("\nblastn could not be found: try 'module load blast+'\n")
+        print("*** error: blastn could not be found: try 'module load blast+'\n")
         raise
 
 # make a blast database from the genome
@@ -64,40 +64,44 @@ SeqIO.write(VP10_record, "VP10_record.fasta", "fasta")
 blast_output = subprocess.check_output(["blastn", "-query", "VP10_record.fasta", "-db", args.genome[0], "-outfmt",
                                         "6 length pident sstart send sstrand"])
 
-# TODO: what if there is more than 1 blast result?
+blast_output = blast_output.decode("utf-8")
+
+if len(blast_output.split("\n")) > 2:
+    print("*** warning: more than 1 blast match found")
+    print("*** warning: using only the top blast match to re-arrange genome")
+    blast_output = blast_output.split("\n")[0]
 
 if not blast_output:
-    print("could not find a WSSV VP10 match in the genome!")
+    print("*** error: could not find a WSSV VP10 match in the genome!")
     sys.exit(1)
 else:
     blast_cols = blast_output.split()
-    blast_cols = [item.decode("utf-8") for item in blast_cols]
     length = blast_cols[0]
     identity = blast_cols[1]
     start = blast_cols[2]
     end = blast_cols[3]
     strand = blast_cols[4]
-    print("\n~~~ VP10 gene found at position {}-{} in the {} strand with {}% identity over {} bps (659 bp total "
-          "length) ~~~".format(start, end, strand, identity, length))
+    print("~~~ VP10 gene found at position {}-{} in the {} strand with {}% identity over {} bps (659 bp total "
+          "length)".format(start, end, strand, identity, length))
 
 # create genome record and reverse complement if required
 
 genome_record = SeqIO.read(args.genome[0], "fasta")
 
 if strand == "minus":
-    print("~~~ reverse complementing genome ~~~")
+    print("~~~ reverse complementing genome")
     genome_record = genome_record.reverse_complement(id=True, name=True, description=True)
     # also need to change the new start position
     start = len(genome_record.seq) - (int(start) - 1) # python 0-based indexing fix
 
 if float(identity) < 80:
-    print("identity is a bit low for the VP10 gene")
+    print("*** warning: identity is low for the VP10 gene")
     # TODO: maybe stop re-arangement if unsure of gene location
 
 # do the actual re-arrangement in biopython
 
 def rearrange_genome(record, new_start):
-    print("~~~ re-arranging genome with new start position ~~~")
+    print("~~~ re-arranging genome with new start position")
     new_start = new_start - 1 # match blast / python indexing
     start_chunk = record[new_start:]
     end_chunk = record[:new_start]
@@ -107,5 +111,5 @@ def rearrange_genome(record, new_start):
 rearranged_genome = rearrange_genome(genome_record, int(start))
 SeqIO.write(rearranged_genome, args.output[0], "fasta")
 
-print("~~~ Genome {} was successfully re-arranged to begin at position {} and written to the file {} ~~~".format(
+print("~~~ Genome {} was successfully re-arranged to begin at position {} and written to the file {}".format(
     args.genome[0], start, args.output[0]))
