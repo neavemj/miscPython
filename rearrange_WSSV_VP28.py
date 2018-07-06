@@ -8,12 +8,13 @@
 # will achieve this by blasting the VP10 gene against the genome
 # and rearranging from that
 
-import sys
+import sys, os
 import argparse
 import subprocess
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
+import glob
 
 # use argparse to grab command line arguments
 
@@ -118,6 +119,15 @@ def rearrange_genome(record, new_start):
 
 rearranged_genome = rearrange_genome(genome_record, int(start))
 SeqIO.write(rearranged_genome, args.output[0], "fasta")
+
+# clean up database and VP10 files
+
+files_to_remove = [args.genome[0] + ext for ext in [".nhr", ".nin", ".nsq"]]
+files_to_remove.append("VP10_record.fasta")
+
+for fl in files_to_remove:
+    os.remove(fl)
+
 
 print("~~~ Genome {} was successfully re-arranged to begin at position {} and written to the file {}".format(
     args.genome[0], start, args.output[0]))
