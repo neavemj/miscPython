@@ -35,7 +35,7 @@ args = parser.parse_args()
 # check required arguments are provided
 
 if args.genome is None or args.output is None:
-    print("*** error: required output is missing"
+    print("*** error: required argument is missing"
           "*** error: input genome and an output file name is required")
     parser.print_help(sys.stderr)
     sys.exit(1)
@@ -55,8 +55,16 @@ subprocess.call(["makeblastdb", "-dbtype", "nucl", "-in", args.genome[0]])
 
 # create and write out a WSSV VP10 record
 
-VP10_record = SeqRecord(Seq("tggatctttctttcactctttcggtcgtgtcggccatcctcgccatcactgctgtgattgctgtatttattgtgatttttaggtatcacaacactgtgaccaagaccatcgaaacccacacagacaatatcgagacaaacatggatgaaaacctccgcattcctgtgactgctgaggttggatcaggctacttcaagatgactgatgtgtcctttgacagcgacaccttgggcaaaatcaagatccgcaatggaaagtctgatgcacagatgaaggaagaagatgcggatcttgtcatcactcccgtggagggccgagcactcgaagtgactgtggggcagaatctcacctttgagggaacattcaaggtgtggaacaacacatcaagaaagatcaacatcactggtatgcagatggtgccaaagattaacccatcaaaggcctttgtcggtagctccaacacctcctccttcacccccgtctctattgatgaggatgaagttggcacctttgtgtgtggtaccacctttggcgcaccaattgcagctaccgccggtggaaatcttttcgacatgtacgtgcacgtcacctactctggcactgagaccgagtaaataaatcgtgcttttttatatagatagggaattttaatattacaa"
-                            ), id="AAK77670.1_nucl", name="VP10", description="WSSV_VP10_ORF1")
+VP10_record = SeqRecord(Seq("tggatctttctttcactctttcggtcgtgtcggccatcctcgccatcactgctgtgattgctgtatttattgtgatttttaggtat"
+                            "cacaacactgtgaccaagaccatcgaaacccacacagacaatatcgagacaaacatggatgaaaacctccgcattcctgtgactgc"
+                            "tgaggttggatcaggctacttcaagatgactgatgtgtcctttgacagcgacaccttgggcaaaatcaagatccgcaatggaaagt"
+                            "ctgatgcacagatgaaggaagaagatgcggatcttgtcatcactcccgtggagggccgagcactcgaagtgactgtggggcagaat"
+                            "ctcacctttgagggaacattcaaggtgtggaacaacacatcaagaaagatcaacatcactggtatgcagatggtgccaaagattaa"
+                            "cccatcaaaggcctttgtcggtagctccaacacctcctccttcacccccgtctctattgatgaggatgaagttggcacctttgtgt"
+                            "gtggtaccacctttggcgcaccaattgcagctaccgccggtggaaatcttttcgacatgtacgtgcacgtcacctactctggcact"
+                            "gagaccgagtaaataaatcgtgcttttttatatagatagggaattttaatattacaa"), id="AAK77670.1_nucl",
+                            name="VP10", description="WSSV_VP10_ORF1")
+
 SeqIO.write(VP10_record, "VP10_record.fasta", "fasta")
 
 # now blast the VP10 gene against the WSSV genome
@@ -96,7 +104,7 @@ if strand == "minus":
 
 if float(identity) < 80:
     print("*** warning: identity is low for the VP10 gene")
-    # TODO: maybe stop re-arangement if unsure of gene location
+    # TODO: maybe stop re-arrangement if identity is too low
 
 # do the actual re-arrangement in biopython
 
