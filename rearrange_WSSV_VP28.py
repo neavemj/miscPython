@@ -80,9 +80,15 @@ else:
     print("\n~~~ VP10 gene found at position {}-{} in the {} strand with {}% identity over {} bps (659 bp total "
           "length) ~~~".format(start, end, strand, identity, length))
 
-if strand != "plus":
-    print("genome will have to be reverse complemented")
-    # TODO: reverse complement genome using biopython
+# create genome record and reverse complement if required
+
+genome_record = SeqIO.read(args.genome[0], "fasta")
+
+if strand == "minus":
+    print("~~~ reverse complementing genome ~~~")
+    genome_record = genome_record.reverse_complement(id=True, name=True, description=True)
+    # also need to change the new start position
+    start = len(genome_record.seq) - (int(start) - 1) # python 0-based indexing fix
 
 if float(identity) < 80:
     print("identity is a bit low for the VP10 gene")
@@ -90,15 +96,15 @@ if float(identity) < 80:
 
 # do the actual re-arrangement in biopython
 
-def rearrange_genome(genome, new_start):
+def rearrange_genome(record, new_start):
     print("~~~ re-arranging genome with new start position ~~~")
-    record = SeqIO.read(genome, "fasta")
+    new_start = new_start - 1 # match blast / python indexing
     start_chunk = record[new_start:]
     end_chunk = record[:new_start]
     new_record = start_chunk + end_chunk
     return(new_record)
 
-rearranged_genome = rearrange_genome(args.genome[0], int(start))
+rearranged_genome = rearrange_genome(genome_record, int(start))
 SeqIO.write(rearranged_genome, args.output[0], "fasta")
 
 print("~~~ Genome {} was successfully re-arranged to begin at position {} and written to the file {} ~~~".format(
