@@ -28,7 +28,7 @@ forward_handle = open(args.output_prefix + ".R1.fastq", "w")
 reverse_handle = open(args.output_prefix + ".R2.fastq", "w")
 
 print("Building list of wanted headers")
-wanted_ids = set([line.strip() for line in args.headers])
+wanted_ids = set([line.strip().lstrip("@") for line in args.headers])
 
 print("Scanning reverse file and building list of names...")
 reverse_ids = set()

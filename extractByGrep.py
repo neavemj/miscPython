@@ -23,5 +23,5 @@ with open(result_file, "w") as f:
             SeqIO.write([seq], f, "fasta")
             count += 1       # keep track of how many IDs were found so can report later
 
-print "Saved %i records from %s to %s" % (count, fasta_file, result_file)
+print("Saved {} records from {} to {}".format(count, fasta_file, result_file))
 
