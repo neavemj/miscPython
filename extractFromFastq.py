@@ -14,13 +14,13 @@ from Bio.SeqIO.QualityIO import FastqGeneralIterator # requires Biopython
 
 parser = argparse.ArgumentParser("extract fastq reads given a list of headers")
 
-parser.add_argument('headers', type = argparse.FileType("r"),
+parser.add_argument('-l', '--headers', type = argparse.FileType("r"),
         nargs = "?", help = "text file containing wanted headers")
-parser.add_argument('forward_reads', type = argparse.FileType("r"),
+parser.add_argument('-1', '--forward_reads', type = argparse.FileType("r"),
         nargs = "?", help = "fastq file containing forward R1 reads")
-parser.add_argument('reverse_reads', type = str,
+parser.add_argument('-2', '--reverse_reads', type = str,
         nargs = "?", help = "fastq file containing reverse R2 reads")
-parser.add_argument('output_prefix', type = str,
+parser.add_argument('-o', '--output_prefix', type = str,
         nargs = "?", help = "a name to prefix the output files")
 
 args = parser.parse_args()

@@ -16,6 +16,7 @@ contig_count = 0
 
 for line in fasta:
     if contig_count > 1:
+        print(file_name)
         print("error there is more than one contig in this file\n"
               "doesn't make sense to rename this way")
         sys.exit(1)
