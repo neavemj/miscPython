@@ -44,7 +44,21 @@ if args.gff is None:
 
 # read through gff and extract required information
 
+with open(args.gff) as fl:
+    for line in fl:
+        line = line.strip()
+        if line == "": conintue
+        # skip commented lines
+        if line.startswith("#"): continue
 
+        # get length of sequences
+        if line.startswith(">"):
+            # call sequence into a seq_record and calculate length
+            continue
+        else:
+            # must be a location I think?
+            # get start and end position
+            # and determine if + or - strand
 
 
 
